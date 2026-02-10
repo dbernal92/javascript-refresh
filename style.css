@@ -1,0 +1,16 @@
+body {
+    background-color: rgb(237, 237, 237);
+}
+
+button {
+    background-color: pink;
+    color: whitesmoke;
+}
+
+.container {
+    text-align: center;
+}
+
+#taskContainer {
+    background-color: gray;
+}
