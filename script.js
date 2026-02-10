@@ -5,8 +5,16 @@ const taskList = document.getElementById("taskList");
 addButton.addEventListener("click", function() {
     const taskText = taskInput.value;
     const newTask = document.createElement('li');
+    const delButton = document.createElement('button');
+
+    delButton.textContent = "Delete";
 
     newTask.textContent = taskText;
     taskList.append(newTask);
+    newTask.append(delButton);
     taskInput.value = "";
+
+    delButton.addEventListener("click", function () {
+        newTask.remove();
+    })
 });
