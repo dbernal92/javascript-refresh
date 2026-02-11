@@ -1,12 +1,12 @@
-// Store tasks as data (to be saved to localStorage)
+// 1. Array that stores tasks as data (to be saved to localStorage)
 let tasks = [];
 
-// Grab the three main elements from the HTML
+// 2. Grab the three main elements from the HTML
 const taskInput = document.getElementById("taskInput");
 const addButton = document.getElementById("addButton");
 const taskList = document.getElementById("taskList");
 
-// Function - create the visual task elements
+// 3. Function - create the visual task elements
 function createTaskElement(taskText) {
     // Create the elements for a new task
     const newTask = document.createElement('li');
@@ -38,19 +38,46 @@ function createTaskElement(taskText) {
 
     // Remove task when delete button is clicked
     delButton.addEventListener("click", function () {
+        // Remove task when delete button is clicked
         newTask.remove();
-    })
+
+        // Find and remove from the tasks array
+        tasks = tasks.filter(function(task) {
+           return task.text !== taskText;
+    });
+    
+    // Update localStorage
+    localStorage.setItem("todoTasks", JSON.stringify(tasks)); 
+        })
+    
     return newTask;
 }
 
-// Listen for clicks on the "Add Task" button
+// 4. Listen for clicks on the "Add Task" button
 addButton.addEventListener("click", function() {
     // Get the text the user typed
     const taskText = taskInput.value;
     
+    // Add new object to the task array
+    tasks.push({text: taskText, completed: false});
+
+    // Converts task array to text and save to the localStorage labeled "todoTasks"
+    localStorage.setItem("todoTasks", JSON.stringify(tasks));
+
     // Use the function to create the task
     createTaskElement(taskText);
 
     // Clear the input field for next task
     taskInput.value = "";
-});
+})
+
+// 5. Load  saved tasks
+const savedTasks = localStorage.getItem('todoTasks');
+
+if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+    
+    tasks.forEach(function(task) {
+        createTaskElement(task.text);
+    });
+}
