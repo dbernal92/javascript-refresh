@@ -7,6 +7,7 @@ addButton.addEventListener("click", function() {
     const newTask = document.createElement('li');
     const delButton = document.createElement('button');
 
+    delButton.classList.add("delButton");
     delButton.textContent = "Delete";
 
     newTask.textContent = taskText;
