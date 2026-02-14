@@ -7,7 +7,7 @@ const addButton = document.getElementById("addButton");
 const taskList = document.getElementById("taskList");
 
 // 3. Function - create the visual task elements
-function createTaskElement(taskText) {
+function createTaskElement(taskText, isCompleted) {
     // Create the elements for a new task
     const newTask = document.createElement('li');
     const delButton = document.createElement('button');
@@ -24,6 +24,12 @@ function createTaskElement(taskText) {
     // Wrap task text in a span so strikethrough only affects text, not buttons
     const taskSpan = document.createElement("span");
     taskSpan.textContent = taskText;
+    
+    // If task is completed, add the strikethrough class
+    if (isCompleted) {
+        taskSpan.classList.add("completed");
+    }
+    
     newTask.append(taskSpan);
 
     // Add everything to the page
@@ -31,9 +37,17 @@ function createTaskElement(taskText) {
     newTask.append(completeButton);
     newTask.append(delButton);
 
-    // Toggle strikethrough when complete button is clicked
     completeButton.addEventListener("click", function () {
+        // Toggle strikethrough when complete button is clicked
         taskSpan.classList.toggle("completed")
+
+        // Find the task in the array
+        const taskInArray = tasks.find(function(task) {
+            return task.text === taskText;
+        })
+
+        taskInArray.completed = !taskInArray.completed;
+        localStorage.setItem("todoTasks", JSON.stringify(tasks));
     })
 
     // Remove task when delete button is clicked
@@ -44,11 +58,11 @@ function createTaskElement(taskText) {
         // Find and remove from the tasks array
         tasks = tasks.filter(function(task) {
            return task.text !== taskText;
-    });
+        });
     
-    // Update localStorage
-    localStorage.setItem("todoTasks", JSON.stringify(tasks)); 
-        })
+        // Update localStorage
+        localStorage.setItem("todoTasks", JSON.stringify(tasks)); 
+    })
     
     return newTask;
 }
@@ -65,19 +79,19 @@ addButton.addEventListener("click", function() {
     localStorage.setItem("todoTasks", JSON.stringify(tasks));
 
     // Use the function to create the task
-    createTaskElement(taskText);
+    createTaskElement(taskText, false);
 
     // Clear the input field for next task
     taskInput.value = "";
 })
 
-// 5. Load  saved tasks
+// 5. Load saved tasks
 const savedTasks = localStorage.getItem('todoTasks');
 
 if (savedTasks) {
     tasks = JSON.parse(savedTasks);
     
     tasks.forEach(function(task) {
-        createTaskElement(task.text);
+        createTaskElement(task.text, task.completed);
     });
 }
