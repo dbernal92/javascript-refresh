@@ -13,5 +13,16 @@
 // "excellent" → 25%
 
 function calculateTip(billAmount, serviceRating) {
-    let
+    const tipRates = {
+        poor: 0.10,
+        ok: 0.15,
+        good: 0.20,
+        excellent: 0.25
+    };
+
+    const tip = billAmount * tipRates[serviceRating];
+    const billFinal = billAmount + tip;
+
+    return { tip, total: billFinal };
+
 }
