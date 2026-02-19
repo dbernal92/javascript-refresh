@@ -12,7 +12,9 @@
 // 0-59 → "F"
 
 function getGrade(score) {
-    if (score >= 90) {
+    if (score < 0 || score > 100) {
+        return "Error: please enter valid score."
+    } else if (score >= 90) {
         return "A";
     } else if (score >= 80) {
         return "B";
